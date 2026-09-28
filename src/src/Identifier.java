@@ -39,14 +39,87 @@ public class Identifier {
 	}
 	
 	public static String identifyLanguage(String input) {
-		//19 Elements
+		//Not all languages can be returned from this list but it is good to have all for readability
 		String[] languageList = {"English", "French", "Portuguese", "Spanish", 
 				"Italian", "German", "Dutch", "Danish", "Swedish", "Norwegian", "Icelandic", 
 				"Czech", "Polish", "Serbo-Croat", "Hungarian", "Albanian", "Romanian", "Finnish", "Estonian",
-				"Lithuanian", "Latvian", "Turkish", "Azerbaijani", "Vietnamese"};
+				"Lithuanian", "Latvian", "Turkish", "Azerbaijani", "Guarani", "Kurmanji Kurdish",
+				"Vietnamese", "Greek", "Thai", "Lao", "Burmese"};
 		
-		
+		input = Normalizer.normalize(input, Normalizer.Form.NFC);
 		input = input.toLowerCase();
+		
+		/*
+		 * These ones are all the only major language in their Script, so they are
+		 * returned immediately.
+		 */
+		//checking for Greek
+		int greekTotal = instancesOf(input, "α") + instancesOf(input, "β") + 
+				instancesOf(input, "γ") + instancesOf(input, "δ") + instancesOf(input, "ε") + 
+				instancesOf(input, "ζ") + instancesOf(input, "η") + instancesOf(input, "θ") + 
+				instancesOf(input, "ι") + instancesOf(input, "κ") + instancesOf(input, "λ") + 
+				instancesOf(input, "μ") + instancesOf(input, "ν") + instancesOf(input, "ξ") + 
+				instancesOf(input, "π") + instancesOf(input, "ρ") + 
+				instancesOf(input, "σ") + instancesOf(input, "ς") + instancesOf(input, "τ") + 
+				instancesOf(input, "υ") + instancesOf(input, "φ") + instancesOf(input, "χ") + 
+				instancesOf(input, "ψ") + instancesOf(input, "ω");
+		if(greekTotal > 0)
+			return "Greek";
+		
+		//Checking for Thai
+		int thaiTotal = instancesOf(input, "ก") + instancesOf(input, "ข") + 
+				instancesOf(input, "ฃ") + instancesOf(input, "ค") + instancesOf(input, "ฅ") + 
+				instancesOf(input, "ฆ") + instancesOf(input, "ง") + instancesOf(input, "จ") + 
+				instancesOf(input, "ฉ") + instancesOf(input, "ช") + instancesOf(input, "ซ") + 
+				instancesOf(input, "ฌ") + instancesOf(input, "ญ") + instancesOf(input, "ฎ") +
+				instancesOf(input, "ฏ") + instancesOf(input, "ฐ") + instancesOf(input, "ฑ") + 
+				instancesOf(input, "ฒ") + instancesOf(input, "ณ") + instancesOf(input, "ด") + 
+				instancesOf(input, "ต") + instancesOf(input, "ถ") + instancesOf(input, "ท") + 
+				instancesOf(input, "ธ") + instancesOf(input, "น") + instancesOf(input, "บ") + 
+				instancesOf(input, "ป") + instancesOf(input, "ผ") + instancesOf(input, "ฝ") + 
+				instancesOf(input, "พ") + instancesOf(input, "ฟ") + instancesOf(input, "ภ") + 
+				instancesOf(input, "ม") + instancesOf(input, "ย") + instancesOf(input, "ร") + 
+				instancesOf(input, "ล") + instancesOf(input, "ว") + instancesOf(input, "ศ") + 
+				instancesOf(input, "ษ") + instancesOf(input, "ส") + instancesOf(input, "ห") + 
+				instancesOf(input, "ฬ") + instancesOf(input, "อ") + instancesOf(input, "ฮ");
+		if(thaiTotal > 0)
+			return "Thai";
+		
+		//Checking for Burmese
+		int burmeseTotal = instancesOf(input, "က") + instancesOf(input, "ခ") + 
+				instancesOf(input, "ဂ") + instancesOf(input, "ဃ") + instancesOf(input, "င") + 
+				instancesOf(input, "စ") + instancesOf(input, "ဆ") + instancesOf(input, "ဇ") + 
+				instancesOf(input, "ဈ") + instancesOf(input, "ဉ") + instancesOf(input, "ည") + 
+				instancesOf(input, "ဋ") + instancesOf(input, "ဌ") + instancesOf(input, "ဍ") + 
+				instancesOf(input, "ဎ") + instancesOf(input, "ဏ") + instancesOf(input, "တ") + 
+				instancesOf(input, "ထ") + instancesOf(input, "ဒ") + instancesOf(input, "ဓ") + 
+				instancesOf(input, "န") + instancesOf(input, "ပ") + instancesOf(input, "ဖ") + 
+				instancesOf(input, "ဗ") + instancesOf(input, "ဘ") + instancesOf(input, "မ") + 
+				instancesOf(input, "ယ") + instancesOf(input, "ရ") + instancesOf(input, "လ") + 
+				instancesOf(input, "ဝ") + instancesOf(input, "သ") + instancesOf(input, "ဟ") + 
+				instancesOf(input, "ဠ") + instancesOf(input, "အ");
+		if(burmeseTotal > 0)
+			return "Burmese";
+		
+		//Checking for Lao
+		int laoTotal = instancesOf(input, "ກ") + instancesOf(input, "ຂ") + 
+				instancesOf(input, "ຄ") + instancesOf(input, "ງ") + instancesOf(input, "ຈ") + 
+				instancesOf(input, "ສ") + instancesOf(input, "ຊ") + instancesOf(input, "ຍ") + 
+				instancesOf(input, "ດ") + instancesOf(input, "ຕ") + instancesOf(input, "ຖ") + 
+				instancesOf(input, "ທ") + instancesOf(input, "ນ") + instancesOf(input, "ບ") + 
+				instancesOf(input, "ປ") + instancesOf(input, "ຜ") + instancesOf(input, "ຝ") + 
+				instancesOf(input, "ພ") + instancesOf(input, "ຟ") + instancesOf(input, "ມ") + 
+				instancesOf(input, "ຢ") + instancesOf(input, "ຣ") + instancesOf(input, "ລ") + 
+				instancesOf(input, "ວ") + instancesOf(input, "ຫ") + instancesOf(input, "ອ") + 
+				instancesOf(input, "ຮ");
+		if(laoTotal > 0)
+			return "Lao";
+		
+		
+		/*
+		 * The below is all for Latin Script.
+		 */
+		
 		//This will be added to in each of the following, with each check 
 		//adding the number of that accent in the input
 		int accentCount = 0;
@@ -71,11 +144,23 @@ public class Identifier {
 		 }
 		
 		/*
+		 * ẽ, ĩ, ũ, ỹ, g̃
+		 * Guarani
+		 */
+		if(instancesOf(input, "ẽ") + instancesOf(input, "ĩ") + 
+				instancesOf(input, "ũ") + instancesOf(input, "ỹ") + instancesOf(input, "g\u0303") > 0){
+			return "Guarani";
+		 }
+		
+		/*
 		 * Checking for ã
 		 * the array will contain only portuguese if that letter is found
 		 */
 		if(instancesOf(input, "ã") > 0){
-			return "Portuguese";
+			accentCount += instancesOf(input, "ã");
+		    String[] arr = {"Portuguese", "Guarani"};
+		    languageList = filterFor(languageList, arr);
+		    acuteOnly = false;
 		 }
 		
 		/*
@@ -84,7 +169,7 @@ public class Identifier {
 		 */
 		if(instancesOf(input, "õ") > 0){
 			accentCount += instancesOf(input, "õ");
-		    String[] arr = {"Portuguese", "Estonian"};
+		    String[] arr = {"Portuguese", "Estonian", "Guarani"};
 		    languageList = filterFor(languageList, arr);
 		    acuteOnly = false;
 		 }
@@ -130,7 +215,7 @@ public class Identifier {
 		if(instancesOf(input, "é") > 0){
 		    accentCount += instancesOf(input, "é");
 		    String[] arr = {"French", "Portuguese", "Spanish", "Italian", "Czech", "Hungarian", 
-		    		"Dutch", "Icelandic", "Norwegian"};
+		    		"Dutch", "Icelandic", "Norwegian", "Guarani"};
 		    languageList = filterFor(languageList, arr);
 		}
 
@@ -140,7 +225,7 @@ public class Identifier {
 		 */
 		if(instancesOf(input, "í") + instancesOf(input, "ú") > 0){
 		    accentCount += instancesOf(input, "í") + instancesOf(input, "ú");
-		    String[] arr = {"Portuguese", "Spanish", "Czech", "Icelandic"};
+		    String[] arr = {"Portuguese", "Spanish", "Czech", "Hungarian", "Icelandic", "Guarani"};
 		    languageList = filterFor(languageList, arr);
 		}
 
@@ -150,7 +235,8 @@ public class Identifier {
 		 */
 		if(instancesOf(input, "á") > 0){
 		    accentCount += instancesOf(input, "á");
-		    String[] arr = {"Portuguese", "Spanish", "Dutch", "Czech", "Icelandic"};
+		    String[] arr = {"Portuguese", "Spanish", "Dutch", "Czech", "Icelandic", 
+		    		"Hungarian", "Guarani"};
 		    languageList = filterFor(languageList, arr);
 		}
 
@@ -160,7 +246,8 @@ public class Identifier {
 		 */
 		if(instancesOf(input, "ó") > 0){
 		    accentCount += instancesOf(input, "ó");
-		    String[] arr = {"Portuguese", "Spanish", "Italian", "Dutch", "Czech", "Icelandic"};
+		    String[] arr = {"Portuguese", "Spanish", "Italian", "Dutch", "Czech", 
+		    		"Icelandic", "Hungarian", "Guarani"};
 		    languageList = filterFor(languageList, arr);
 		}
 
@@ -233,7 +320,7 @@ public class Identifier {
 		 */
 		if(instancesOf(input, "ê") > 0){
 		    accentCount += instancesOf(input, "ê");
-		    String[] arr = {"Portuguese", "French", "Dutch"};
+		    String[] arr = {"Portuguese", "French", "Dutch", "Kurmanji Kurdish"};
 		    languageList = filterFor(languageList, arr);
 		    acuteOnly = false;
 		}
@@ -244,7 +331,7 @@ public class Identifier {
 		 */
 		if(instancesOf(input, "î") > 0){
 		    accentCount += instancesOf(input, "î");
-		    String[] arr = {"French", "Romanian"};
+		    String[] arr = {"French", "Romanian", "Kurmanji Kurdish"};
 		    languageList = filterFor(languageList, arr);
 		    acuteOnly = false;
 		}
@@ -262,10 +349,13 @@ public class Identifier {
 
 		/*
 		 * check for û
-		 * French
+		 * French, Kurmanji Kurdish
 		 */
 		if(instancesOf(input, "û") > 0){
-		    return "French";
+			accentCount += instancesOf(input, "û");
+		    String[] arr = {"French", "Kurmanji Kurdish"};
+		    languageList = filterFor(languageList, arr);
+		    acuteOnly = false;
 		}
 
 		/*
@@ -301,21 +391,28 @@ public class Identifier {
 
 		/*
 		 * check for ç
-		 * French, Portuguese, Albanian, Turkish
+		 * French, Portuguese, Albanian, Turkish, Kurmanji Kurdish
 		 */
 		if(instancesOf(input, "ç") > 0){
 		    accentCount += instancesOf(input, "ç");
-		    String[] arr = {"French", "Portuguese", "Albanian", "Turkish"};
+		    String[] arr = {"French", "Portuguese", "Albanian", "Turkish", "Kurmanji Kurdish"};
 		    languageList = filterFor(languageList, arr);
 		    acuteOnly = false;
 		}
 
 		/*
 		 * check for ñ
-		 * Spanish
+		 * Spanish, Guarani
 		 */
 		if(instancesOf(input, "ñ") > 0){
-			return "Spanish";
+			accentCount += instancesOf(input, "ñ");
+		    String[] arr = {"Spanish", "Guarani"};
+		    languageList = filterFor(languageList, arr);
+		    acuteOnly = false;
+		    //returns Spanish if it is not already limited to Guarani
+		    if(Arrays.asList(languageList).contains("Spanish"))
+		    	return "Spanish";
+		    
 		}
 
 		/*
@@ -344,11 +441,11 @@ public class Identifier {
 		
 		/*
 		 * check for ý
-		 * Czech, Icelandic
+		 * Czech, Icelandic, Guarani
 		 */
 		if(instancesOf(input, "ý") > 0){
 		    accentCount += instancesOf(input, "ý");
-		    String[] arr = {"Czech", "Icelandic"};
+		    String[] arr = {"Czech", "Icelandic", "Guarani"};
 		    languageList = filterFor(languageList, arr);
 		    acuteOnly = false;
 		}
@@ -467,7 +564,7 @@ public class Identifier {
 
 		/*
 		 * check for å
-		 * Finnish
+		 * Finnish, Danish, Norwegian, Swedish
 		 */
 		if(instancesOf(input, "å") > 0){
 			accentCount += instancesOf(input, "å");
@@ -481,8 +578,6 @@ public class Identifier {
 			}
 			
 		    acuteOnly = false;
-		    
-		    //filter to Swedish and Norwegian above some frequency
 		}
 		
 		/*
@@ -532,14 +627,26 @@ public class Identifier {
 		}
 		
 		/*
-		 * check for ş, ğ, ı
+		 * check for ğ, ı
 		 * Turkish
 		 * 
 		 * These letters could also be contained in Azerbaijani, but if there is no ə
 		 * it is always a better guess to go with Turkish due to ə's frequency in Azerbaijani.
 		 */
-		if(instancesOf(input, "ş") + instancesOf(input, "ğ") + instancesOf(input, "ı") > 0){
+		if(instancesOf(input, "ğ") + instancesOf(input, "ı") > 0){
 		    return "Turkish";
+		}
+		
+		/*
+		 * check for ş
+		 * Turkish, Kurmanji Kurdish
+		 * same situation as above with azerbaijani
+		 */
+		if(instancesOf(input, "ş") > 0){
+			accentCount += instancesOf(input, "ş");
+		    String[] arr = {"Turkish", "Kurmanji Kurdish"};
+		    languageList = filterFor(languageList, arr);
+		    acuteOnly = false;
 		}
 		
 		//returns the one remaining element if there is only one
