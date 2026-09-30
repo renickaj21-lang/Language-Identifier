@@ -44,10 +44,30 @@ public class Identifier {
 				"Italian", "German", "Dutch", "Danish", "Swedish", "Norwegian", "Icelandic", 
 				"Czech", "Polish", "Serbo-Croat", "Hungarian", "Albanian", "Romanian", "Finnish", "Estonian",
 				"Lithuanian", "Latvian", "Turkish", "Azerbaijani", "Guarani", "Kurmanji Kurdish",
-				"Vietnamese", "Greek", "Thai", "Lao", "Burmese"};
+				"Vietnamese", "Greek", "Thai", "Lao", "Burmese", "Persian", "Arabic"};
 		
 		input = Normalizer.normalize(input, Normalizer.Form.NFC);
 		input = input.toLowerCase();
+		
+		
+		
+		
+		/*
+		 * These are for the languages in Arabic Script
+		 */
+		int persianTotal = instancesOf(input, "پ")
+		          + instancesOf(input, "چ")
+		          + instancesOf(input, "ژ")
+		          + instancesOf(input, "گ")
+		          + instancesOf(input, "ک")
+		          + instancesOf(input, "ی");
+		if(persianTotal > 0)
+			return "Persian";
+		
+		//taa marbuta and alif maqsura
+		if(instancesOf(input, "\u0629") + instancesOf(input, "\u0649") > 0)
+			return "Arabic";
+		
 		
 		/*
 		 * These ones are all the only major language in their Script, so they are

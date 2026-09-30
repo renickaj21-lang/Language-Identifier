@@ -28,6 +28,7 @@ public class Driver {
 		
 			//checking for adequate frequency of spaces to be language
 			//Some languages do not use spaces between words so the check will be ignored in that case
+			System.out.println(((double) Identifier.instancesOf(input, " ") / input.length()));
 			if(!nonSpaceScript(input)) {
 				if (lower.isEmpty() ||
 						((double) Identifier.instancesOf(input, " ") / input.length()) < 0.12) {
@@ -51,8 +52,9 @@ public class Driver {
 	 * returns true if the script is one that does not use spaces. false if it does
 	 */
 	public static boolean nonSpaceScript(String input) {
-		if(Identifier.identifyLanguage(input).equals("Thai") || Identifier.identifyLanguage(input).equals("Burmese") ||
-				Identifier.identifyLanguage(input).equals("Lao")) {
+		String language = Identifier.identifyLanguage(input);
+		if(language.equals("Thai") || language.equals("Burmese") || language.equals("Lao") || 
+				language.equals("Arabic") || language.equals("Persian")) {
 			return true;
 		}
 		return false;
