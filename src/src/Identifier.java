@@ -46,6 +46,9 @@ public class Identifier {
 				"Lithuanian", "Latvian", "Turkish", "Azerbaijani", "Guarani", "Kurmanji Kurdish",
 				"Vietnamese", "Greek", "Thai", "Lao", "Burmese", "Persian", "Arabic"};
 		
+		if(instancesOf(input, " ") == 0 || input.length() == 0)
+			return "";
+		
 		input = Normalizer.normalize(input, Normalizer.Form.NFC);
 		input = input.toLowerCase();
 		
@@ -786,7 +789,7 @@ public class Identifier {
 		//Italian is known for having almost all words ending in a vowel.
 		//If it's over 60% in the input, then Italian is identified.
 		if((instancesOf(input, "a ") + instancesOf(input, "e ") + instancesOf(input, "i ")
-        + instancesOf(input, "o ") + instancesOf(input, "u "))/ instancesOf(input, " ") > 0.6)
+        + instancesOf(input, "o ") + instancesOf(input, "u ")) / instancesOf(input, " ") > 0.6)
 			return "Italian";
 		
 		//If I have time later on, I can check for specific words that only appear in one or the other
