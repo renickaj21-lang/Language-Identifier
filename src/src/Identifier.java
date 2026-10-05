@@ -43,8 +43,9 @@ public class Identifier {
 		String[] languageList = {"English", "French", "Portuguese", "Spanish", 
 				"Italian", "German", "Dutch", "Danish", "Swedish", "Norwegian", "Icelandic", 
 				"Czech", "Polish", "Serbo-Croat", "Hungarian", "Albanian", "Romanian", "Finnish", "Estonian",
-				"Lithuanian", "Latvian", "Turkish", "Azerbaijani", "Guarani", "Kurmanji Kurdish",
-				"Vietnamese", "Greek", "Thai", "Lao", "Burmese", "Persian", "Arabic"};
+				"Lithuanian", "Latvian", "Turkish", "Azerbaijani", "Georgian", "Armenian",
+				"Guarani", "Kurmanji Kurdish", "Ukrainian", "Russian", "Macedonian", "Serbian",
+				"Vietnamese", "Greek", "Thai", "Lao", "Burmese", "Persian", "Arabic"}; 
 		
 		if(instancesOf(input, " ") == 0 || input.length() == 0)
 			return "";
@@ -52,6 +53,71 @@ public class Identifier {
 		input = Normalizer.normalize(input, Normalizer.Form.NFC);
 		input = input.toLowerCase();
 		
+		/*
+		 * Cyrillic languages
+		 * Ukrainian, 
+		 */
+		
+		//these letters are in ukrainian but not russian
+		int ukrainianTotal = instancesOf(input, "і") + instancesOf(input, "ї") + 
+				instancesOf(input, "є") + instancesOf(input, "ґ");
+		if(ukrainianTotal > 0)
+			return "Ukrainian";
+		
+		/*
+		 * Serbian-unique letters
+		 */
+		if(instancesOf(input, "ђ") + instancesOf(input, "ћ") > 0)
+			return "Serbian";
+		
+		/*
+		 * Macedonian-unique letters
+		 */
+		if(instancesOf(input, "ѓ") + instancesOf(input, "ќ") + instancesOf(input, "ѕ") > 0)
+			return "Macedonian";
+		
+		/*
+		 * Serbian - Macedonian commonalities
+		 */
+		if(instancesOf(input, "ј") + instancesOf(input, "љ") + 
+				instancesOf(input, "њ") + instancesOf(input, "џ") > 0) {
+			String[] arr = {"Macedonian", "Serbian"};
+		    languageList = filterFor(languageList, arr);
+		}
+		
+		//hopefully it doesn't get here but Macedonian is more likely to
+		//not be distinguishable for certain
+		if(Arrays.asList(languageList).contains("Serbian") && Arrays.asList(languageList).contains("Macedonian") && 
+				!Arrays.asList(languageList).contains("English"))
+			return "Macedonian";
+			
+		
+		/*
+		 * This is tested last; if none of the above are detected, this one checks 
+		 * for Cyrillic in general and gives Russian if it is
+		 */
+		int cyrillicTotal = instancesOf(input, "о") + instancesOf(input, "е") + 
+				instancesOf(input, "а") + instancesOf(input, "и") + instancesOf(input, "н") + 
+				instancesOf(input, "т") + instancesOf(input, "с");
+		if(cyrillicTotal > 0)
+			return "Russian";
+		
+		
+		/*
+		 * For georgian and armenian, calling the most common seven
+		 */
+		
+		int georgianTotal = instancesOf(input, "ა") + instancesOf(input, "ი") +
+		instancesOf(input, "ე") + instancesOf(input, "ო") + instancesOf(input, "ნ")+
+		instancesOf(input, "რ") + instancesOf(input, "ს");
+		if(georgianTotal > 0)
+			return "Georgian";
+		
+		int armenianTotal = instancesOf(input, "ա") + instancesOf(input, "ե") +
+		instancesOf(input, "ն") + instancesOf(input, "ր") + instancesOf(input, "ի") +
+		instancesOf(input, "ո") + instancesOf(input, "ս");
+				if(armenianTotal > 0)
+					return "Armenian";
 		
 		
 		
@@ -67,7 +133,7 @@ public class Identifier {
 		if(persianTotal > 0)
 			return "Persian";
 		
-		//taa marbuta and alif maqsura
+		//this is checking taa marbuta and alif maqsura
 		if(instancesOf(input, "\u0629") + instancesOf(input, "\u0649") > 0)
 			return "Arabic";
 		
@@ -75,66 +141,35 @@ public class Identifier {
 		/*
 		 * These ones are all the only major language in their Script, so they are
 		 * returned immediately.
+		 * 
+		 * I only check for the most common 7 letters to avoid unnecessary calls
+		 * to the instancesOf() method
 		 */
 		//checking for Greek
-		int greekTotal = instancesOf(input, "α") + instancesOf(input, "β") + 
-				instancesOf(input, "γ") + instancesOf(input, "δ") + instancesOf(input, "ε") + 
-				instancesOf(input, "ζ") + instancesOf(input, "η") + instancesOf(input, "θ") + 
-				instancesOf(input, "ι") + instancesOf(input, "κ") + instancesOf(input, "λ") + 
-				instancesOf(input, "μ") + instancesOf(input, "ν") + instancesOf(input, "ξ") + 
-				instancesOf(input, "π") + instancesOf(input, "ρ") + 
-				instancesOf(input, "σ") + instancesOf(input, "ς") + instancesOf(input, "τ") + 
-				instancesOf(input, "υ") + instancesOf(input, "φ") + instancesOf(input, "χ") + 
-				instancesOf(input, "ψ") + instancesOf(input, "ω");
+		int greekTotal = instancesOf(input, "α") + instancesOf(input, "ι") + 
+				instancesOf(input, "ο") + instancesOf(input, "ε") + instancesOf(input, "τ") + 
+				instancesOf(input, "ν") + instancesOf(input, "ς");
 		if(greekTotal > 0)
 			return "Greek";
 		
 		//Checking for Thai
-		int thaiTotal = instancesOf(input, "ก") + instancesOf(input, "ข") + 
-				instancesOf(input, "ฃ") + instancesOf(input, "ค") + instancesOf(input, "ฅ") + 
-				instancesOf(input, "ฆ") + instancesOf(input, "ง") + instancesOf(input, "จ") + 
-				instancesOf(input, "ฉ") + instancesOf(input, "ช") + instancesOf(input, "ซ") + 
-				instancesOf(input, "ฌ") + instancesOf(input, "ญ") + instancesOf(input, "ฎ") +
-				instancesOf(input, "ฏ") + instancesOf(input, "ฐ") + instancesOf(input, "ฑ") + 
-				instancesOf(input, "ฒ") + instancesOf(input, "ณ") + instancesOf(input, "ด") + 
-				instancesOf(input, "ต") + instancesOf(input, "ถ") + instancesOf(input, "ท") + 
-				instancesOf(input, "ธ") + instancesOf(input, "น") + instancesOf(input, "บ") + 
-				instancesOf(input, "ป") + instancesOf(input, "ผ") + instancesOf(input, "ฝ") + 
-				instancesOf(input, "พ") + instancesOf(input, "ฟ") + instancesOf(input, "ภ") + 
-				instancesOf(input, "ม") + instancesOf(input, "ย") + instancesOf(input, "ร") + 
-				instancesOf(input, "ล") + instancesOf(input, "ว") + instancesOf(input, "ศ") + 
-				instancesOf(input, "ษ") + instancesOf(input, "ส") + instancesOf(input, "ห") + 
-				instancesOf(input, "ฬ") + instancesOf(input, "อ") + instancesOf(input, "ฮ");
+		int thaiTotal = instancesOf(input, "า") + instancesOf(input, "น") + 
+				instancesOf(input, "อ") + instancesOf(input, "ร") + instancesOf(input, "ก") +
+				instancesOf(input, "เ") + instancesOf(input, "ม");
 		if(thaiTotal > 0)
 			return "Thai";
 		
 		//Checking for Burmese
-		int burmeseTotal = instancesOf(input, "က") + instancesOf(input, "ခ") + 
-				instancesOf(input, "ဂ") + instancesOf(input, "ဃ") + instancesOf(input, "င") + 
-				instancesOf(input, "စ") + instancesOf(input, "ဆ") + instancesOf(input, "ဇ") + 
-				instancesOf(input, "ဈ") + instancesOf(input, "ဉ") + instancesOf(input, "ည") + 
-				instancesOf(input, "ဋ") + instancesOf(input, "ဌ") + instancesOf(input, "ဍ") + 
-				instancesOf(input, "ဎ") + instancesOf(input, "ဏ") + instancesOf(input, "တ") + 
-				instancesOf(input, "ထ") + instancesOf(input, "ဒ") + instancesOf(input, "ဓ") + 
-				instancesOf(input, "န") + instancesOf(input, "ပ") + instancesOf(input, "ဖ") + 
-				instancesOf(input, "ဗ") + instancesOf(input, "ဘ") + instancesOf(input, "မ") + 
-				instancesOf(input, "ယ") + instancesOf(input, "ရ") + instancesOf(input, "လ") + 
-				instancesOf(input, "ဝ") + instancesOf(input, "သ") + instancesOf(input, "ဟ") + 
-				instancesOf(input, "ဠ") + instancesOf(input, "အ");
+		int burmeseTotal = instancesOf(input, "က") + instancesOf(input, "န") + 
+				instancesOf(input, "မ") + instancesOf(input, "တ") + instancesOf(input, "ရ") + 
+				instancesOf(input, "ပ") + instancesOf(input, "သ");
 		if(burmeseTotal > 0)
 			return "Burmese";
 		
 		//Checking for Lao
-		int laoTotal = instancesOf(input, "ກ") + instancesOf(input, "ຂ") + 
-				instancesOf(input, "ຄ") + instancesOf(input, "ງ") + instancesOf(input, "ຈ") + 
-				instancesOf(input, "ສ") + instancesOf(input, "ຊ") + instancesOf(input, "ຍ") + 
-				instancesOf(input, "ດ") + instancesOf(input, "ຕ") + instancesOf(input, "ຖ") + 
-				instancesOf(input, "ທ") + instancesOf(input, "ນ") + instancesOf(input, "ບ") + 
-				instancesOf(input, "ປ") + instancesOf(input, "ຜ") + instancesOf(input, "ຝ") + 
-				instancesOf(input, "ພ") + instancesOf(input, "ຟ") + instancesOf(input, "ມ") + 
-				instancesOf(input, "ຢ") + instancesOf(input, "ຣ") + instancesOf(input, "ລ") + 
-				instancesOf(input, "ວ") + instancesOf(input, "ຫ") + instancesOf(input, "ອ") + 
-				instancesOf(input, "ຮ");
+		int laoTotal = instancesOf(input, "າ") + instancesOf(input, "ນ") + 
+				instancesOf(input, "ວ") + instancesOf(input, "ອ") + instancesOf(input, "ກ") + 
+				instancesOf(input, "ລ") + instancesOf(input, "ເ");
 		if(laoTotal > 0)
 			return "Lao";
 		
@@ -734,7 +769,6 @@ public class Identifier {
 		
 		//I need to handle Portuguese, Spanish, and French with accents
 		//Could make better later using circonflex accents
-		//TEST MORE OF THESE
 		if(accentCount > 0) {
 			int éCases = instancesOf(input, "é");
 			int acuteNonECount = instancesOf(input, "á") + instancesOf(input, "í")
@@ -764,13 +798,7 @@ public class Identifier {
 		}
 		
 		/*These languages will be allowed to remain if accentCount is still 0:
-		 * "English", "French", "Portuguese", "Spanish", "Italian", "German", 
-		 * "Dutch", "Danish", "Norwegian", "Finnish", "Estonian"
-		 * For now, I am going to assume only the below can have 0 accents
-		 * 
-		 * The following should alone should remain if it is above a certain relatively low length (a 
-		 * medium length sentence?):
-		 * English, Italian, Dutch, Norwegian
+		 * English, Italian, Dutch
 		 */
 		
 		if(accentCount == 0) {
@@ -781,7 +809,7 @@ public class Identifier {
 		 * It is probably incredibly difficult to stumble on to this. Almost all cases 
 		 * are handled above.
 		 */
-		String language = "a really niche edge case. Impressive";
+		String language = "A really niche edge case. Impressive";
 		return language;
 	}
 	

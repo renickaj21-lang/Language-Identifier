@@ -28,9 +28,10 @@ public class Driver {
 		
 			//checking for adequate frequency of spaces to be language
 			//Some languages do not use spaces between words so the check will be ignored in that case
+			//System.out.println((double) Identifier.instancesOf(input, " ") / input.length());
 			if(!nonSpaceScript(input)) {
 				if (lower.isEmpty() ||
-						((double) Identifier.instancesOf(input, " ") / input.length()) < 0.12) {
+						((double) Identifier.instancesOf(input, " ") / input.length()) < 0.08) {
 					System.out.println("Are you sure that is language? (If so, writing more should fix the problem.)");
 					System.out.print("Enter some text:");
 				}else {
@@ -54,7 +55,7 @@ public class Driver {
 		//for some reason arabic is sometimes really low
 		String language = Identifier.identifyLanguage(input);
 		if(language.equals("Thai") || language.equals("Burmese") || language.equals("Lao") || 
-				language.equals("Arabic")) {
+				language.equals("Arabic") || language.equals("Georgian")) {
 			return true;
 		}
 		return false;
