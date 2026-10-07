@@ -1,7 +1,7 @@
 # Language Identifier
 This project identifies the language of a string input.
 ## Supported Functionality
-The following languages are supported in this project
+The following languages are supported in this project:
 Albanian, Arabic, Armenian, Azerbaijani, Burmese, Czech, Danish, Dutch, English, 
 Estonian, Finnish, French, Georgian, German, Greek, Guarani, Hungarian, Icelandic, Italian, 
 Kurmanji Kurdish, Lao, Latvian, Lithuanian, Macedonian, Norwegian, Persian, Polish, Portuguese, 
